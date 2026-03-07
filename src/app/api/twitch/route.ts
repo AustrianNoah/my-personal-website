@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 const CLIENT_ID = process.env.TWITCH_CLIENT_ID ?? "";
 const CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET ?? "";
-const BROADCASTER_LOGIN = process.env.TWITCH_LOGIN ?? "eynoah";
+const BROADCASTER_LOGIN = process.env.TWITCH_LOGIN ?? "itscubatv";
 
 let tokenCache: { access_token: string; expires_at: number } | null = null;
 

@@ -3,125 +3,113 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Twitch, Youtube, Twitter } from "lucide-react";
+import { Twitch, Youtube, Twitter, Menu, X } from "lucide-react";
 
-const navLinks = [
+const links = [
     { href: "/", label: "Home" },
-    { href: "/plan", label: "Stream Plan" },
+    { href: "/plan", label: "Schedule" },
     { href: "/clips", label: "Clips" },
-    { href: "/impressum", label: "Impressum" },
+    { href: "/impressum", label: "Legal" },
 ];
 
 export default function Navbar() {
-    const [open, setOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [open, setOpen] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
+        const fn = () => setScrolled(window.scrollY > 40);
+        window.addEventListener("scroll", fn);
+        return () => window.removeEventListener("scroll", fn);
     }, []);
 
     return (
-        <motion.header
-            initial={{ y: -80 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-                position: "sticky",
-                top: 0,
-                zIndex: 100,
-                borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
-                background: scrolled ? "rgba(5,5,8,0.9)" : "transparent",
-                backdropFilter: scrolled ? "blur(20px)" : "none",
-                transition: "all 0.3s ease",
-            }}
-        >
-            <nav style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
-                {/* Logo */}
-                <Link href="/" style={{ textDecoration: "none" }}>
-                    <motion.div whileHover={{ scale: 1.03 }} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{
-                            width: 36, height: 36, borderRadius: 8,
-                            background: "linear-gradient(135deg, var(--accent), var(--neon))",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                            fontFamily: "'Bebas Neue', sans-serif", fontSize: 18, color: "white",
-                            boxShadow: "0 0 20px rgba(124,58,237,0.5)"
-                        }}>EY</div>
-                        <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 24, letterSpacing: "0.05em", color: "var(--text)" }}>
-              Ey<span style={{ color: "var(--accent2)" }}>Noah</span>
-            </span>
-                    </motion.div>
-                </Link>
+        <>
+            <motion.header
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                    position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+                    borderBottom: `1px solid ${scrolled ? "var(--border)" : "transparent"}`,
+                    background: scrolled ? "rgba(8,8,9,0.92)" : "transparent",
+                    backdropFilter: scrolled ? "blur(24px)" : "none",
+                    transition: "all 0.4s ease",
+                }}
+            >
+                <div style={{ maxWidth: 1400, margin: "0 auto", padding: "0 32px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    {/* Logo */}
+                    <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 12 }}>
+                        <motion.div whileHover={{ scale: 1.02 }} style={{ display: "flex", alignItems: "baseline", gap: 1 }}>
+                            <span className="f-display" style={{ fontSize: 22, color: "var(--white)", letterSpacing: "0.04em" }}>EY</span>
+                            <span className="f-display" style={{ fontSize: 22, color: "var(--cyan)", letterSpacing: "0.04em" }}>NOAH</span>
+                            <span className="f-mono" style={{ fontSize: 9, color: "var(--white3)", marginLeft: 8, letterSpacing: "0.1em" }}>v2.0 - Comeback</span>
+                        </motion.div>
+                    </Link>
 
-                {/* Desktop Nav */}
-                <div style={{ display: "flex", alignItems: "center", gap: 4 }} className="hidden-mobile">
-                    {navLinks.map((link) => (
-                        <Link key={link.href} href={link.href} style={{ textDecoration: "none" }}>
-                            <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                style={{
-                                    padding: "8px 16px", borderRadius: 8,
-                                    color: pathname === link.href ? "var(--text)" : "var(--text2)",
-                                    background: pathname === link.href ? "rgba(124,58,237,0.12)" : "transparent",
-                                    border: pathname === link.href ? "1px solid rgba(124,58,237,0.3)" : "1px solid transparent",
-                                    fontWeight: 600, fontSize: 14, letterSpacing: "0.03em",
-                                    transition: "all 0.2s",
-                                }}
-                            >
-                                {link.label}
-                            </motion.div>
-                        </Link>
-                    ))}
+                    {/* Center nav */}
+                    <nav style={{ display: "flex", gap: 2 }} className="hide-mobile">
+                        {links.map(({ href, label }) => {
+                            const active = pathname === href;
+                            return (
+                                <Link key={href} href={href} style={{ textDecoration: "none" }}>
+                                    <motion.div
+                                        whileHover={{ color: "var(--white)" }}
+                                        style={{
+                                            padding: "8px 20px",
+                                            fontFamily: "'Archivo', sans-serif", fontWeight: 600,
+                                            fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase",
+                                            color: active ? "var(--white)" : "var(--white3)",
+                                            borderBottom: active ? "1px solid var(--cyan)" : "1px solid transparent",
+                                            transition: "all 0.2s",
+                                        }}
+                                    >{label}</motion.div>
+                                </Link>
+                            );
+                        })}
+                    </nav>
+
+                    {/* Socials */}
+                    <div style={{ display: "flex", gap: 16, alignItems: "center" }} className="hide-mobile">
+                        {[
+                            { Icon: Twitch, href: "https://twitch.tv", col: "#9146ff" },
+                            { Icon: Youtube, href: "https://youtube.com", col: "#ff0000" },
+                            { Icon: Twitter, href: "https://twitter.com", col: "var(--white)" },
+                        ].map(({ Icon, href, col }) => (
+                            <motion.a key={href} href={href} target="_blank"
+                                      whileHover={{ color: col, scale: 1.15 }}
+                                      style={{ color: "var(--white3)", transition: "color 0.2s" }}>
+                                <Icon size={16} />
+                            </motion.a>
+                        ))}
+                        <a href="https://twitch.tv" target="_blank" className="btn btn-cyan" style={{ padding: "9px 18px", fontSize: 11 }}>
+                            <span className="live-dot" />Live schauen
+                        </a>
+                    </div>
+
+                    {/* Mobile */}
+                    <button onClick={() => setOpen(!open)} style={{ background: "none", border: "none", color: "var(--white)", cursor: "pointer" }} className="show-mobile">
+                        {open ? <X size={20} /> : <Menu size={20} />}
+                    </button>
                 </div>
+            </motion.header>
 
-                {/* Social Icons */}
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }} className="hidden-mobile">
-                    {[
-                        { Icon: Twitch, href: "https://twitch.tv", color: "#9146ff" },
-                        { Icon: Youtube, href: "https://youtube.com", color: "#ff0000" },
-                        { Icon: Twitter, href: "https://twitter.com", color: "#1da1f2" },
-                    ].map(({ Icon, href, color }) => (
-                        <motion.a key={href} href={href} target="_blank" whileHover={{ scale: 1.15, color }} style={{ color: "var(--text3)", transition: "color 0.2s" }}>
-                            <Icon size={18} />
-                        </motion.a>
-                    ))}
-                </div>
-
-                {/* Mobile menu btn */}
-                <button onClick={() => setOpen(!open)} style={{ background: "none", border: "none", color: "var(--text)", cursor: "pointer" }} className="show-mobile">
-                    {open ? <X size={22} /> : <Menu size={22} />}
-                </button>
-            </nav>
-
-            {/* Mobile Menu */}
+            {/* Mobile menu */}
             <AnimatePresence>
                 {open && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        style={{ borderTop: "1px solid var(--border)", background: "rgba(5,5,8,0.97)", backdropFilter: "blur(20px)" }}
-                    >
-                        {navLinks.map((link, i) => (
-                            <motion.div key={link.href} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
-                                <Link href={link.href} onClick={() => setOpen(false)} style={{
-                                    display: "block", padding: "14px 24px", color: pathname === link.href ? "var(--accent3)" : "var(--text2)",
-                                    textDecoration: "none", fontWeight: 600, borderBottom: "1px solid var(--border)"
-                                }}>
-                                    {link.label}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                                style={{ position: "fixed", inset: 0, background: "var(--black)", zIndex: 999, display: "flex", flexDirection: "column", justifyContent: "center", padding: 40 }}>
+                        <button onClick={() => setOpen(false)} style={{ position: "absolute", top: 20, right: 24, background: "none", border: "none", color: "var(--white)", cursor: "pointer" }}><X size={24} /></button>
+                        {links.map(({ href, label }, i) => (
+                            <motion.div key={href} initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.07 }}>
+                                <Link href={href} onClick={() => setOpen(false)} style={{ display: "block", textDecoration: "none" }}>
+                                    <div className="f-display" style={{ fontSize: 48, color: "var(--white)", marginBottom: 16, letterSpacing: "0.03em" }}>{label.toUpperCase()}</div>
                                 </Link>
                             </motion.div>
                         ))}
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            <style>{`
-        @media (max-width: 768px) { .hidden-mobile { display: none !important; } }
-        @media (min-width: 769px) { .show-mobile { display: none !important; } }
-      `}</style>
-        </motion.header>
+        </>
     );
 }

@@ -37,10 +37,10 @@ export default function ClipsPage() {
                             BESTE<br /><span style={{ color: "transparent", WebkitTextStroke: "2px var(--cyan)" }}>MOMENTE.</span>
                         </motion.h1>
                         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                            <a href="https://youtube.com" target="_blank" className="btn btn-outline" style={{ display: "inline-flex" }}>
+                            <a href="https://youtube.com/@TypischNoaahCTF" target="_blank" className="btn btn-outline" style={{ display: "inline-flex" }}>
                                 <Youtube size={14} color="#ff0000" /> YouTube <ExternalLink size={12} />
                             </a>
-                            <a href="https://twitch.tv" target="_blank" className="btn btn-outline" style={{ display: "inline-flex" }}>
+                            <a href="https://twitch.tv/Labynoah" target="_blank" className="btn btn-outline" style={{ display: "inline-flex" }}>
                                 <Twitch size={14} color="#9146ff" /> Twitch <ExternalLink size={12} />
                             </a>
                         </div>
