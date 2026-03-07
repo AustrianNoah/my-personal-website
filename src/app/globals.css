@@ -1,26 +1,44 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #050508;
+  --bg2: #0a0a0f;
+  --surface: #0f0f17;
+  --surface2: #16161f;
+  --border: #1e1e2e;
+  --accent: #7c3aed;
+  --accent2: #a855f7;
+  --accent3: #c084fc;
+  --neon: #e879f9;
+  --text: #f0eeff;
+  --text2: #9d9db8;
+  --text3: #5a5a7a;
+  --live: #10b981;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; overflow-x: hidden; }
+::selection { background: var(--accent); color: white; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+.font-display { font-family: 'Bebas Neue', sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+.glow { box-shadow: 0 0 30px rgba(124, 58, 237, 0.3), 0 0 60px rgba(124, 58, 237, 0.15); }
+.glow-text { text-shadow: 0 0 20px rgba(200, 132, 252, 0.8); }
+.grid-bg {
+  background-image: linear-gradient(rgba(124, 58, 237, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124, 58, 237, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; font-family: 'Syne', sans-serif; font-weight: 700; border: none; cursor: pointer; border-radius: 8px; transition: all 0.2s; letter-spacing: 0.05em; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5); }
+.btn-ghost { background: transparent; color: var(--text2); font-family: 'Syne', sans-serif; font-weight: 600; border: 1px solid var(--border); cursor: pointer; border-radius: 8px; transition: all 0.2s; }
+.btn-ghost:hover { border-color: var(--accent); color: var(--text); background: rgba(124, 58, 237, 0.08); }
+.live-badge { background: var(--live); color: white; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.1em; animation: pulse-live 2s infinite; }
+@keyframes pulse-live { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+.gradient-border { position: relative; }
+.gradient-border::before { content: ''; position: absolute; inset: -1px; border-radius: 13px; background: linear-gradient(135deg, var(--accent), transparent, var(--neon)); z-index: -1; }
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+.float { animation: float 4s ease-in-out infinite; }
