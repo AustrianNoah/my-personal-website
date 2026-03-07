@@ -14,14 +14,14 @@ const sections = [
     },
     {
         id: "02", title: "Kontakt", icon: Mail,
-        content: [{ label: "E-Mail", val: "[deine@email.de]" }]
+        content: [{ label: "E-Mail", val: "marcel.weixelbaum02@gmail.com" }]
     },
     {
         id: "03", title: "Plattformen", icon: ExternalLink,
         content: [
             { label: "Twitch", val: "twitch.tv/EyNoah" },
-            { label: "YouTube", val: "youtube.com/@EyNoah" },
-            { label: "Twitter / X", val: "@EyNoah" },
+            { label: "YouTube", val: "youtube.com/@TypischNoaahCTF" },
+            { label: "Twitter / X", val: "@NoahLikesPMMP" },
         ]
     },
 ];
