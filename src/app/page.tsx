@@ -1,116 +1,206 @@
 "use client";
-import { motion } from "framer-motion";
-import { Twitch, Youtube, Twitter, Users, Eye, Zap, ChevronRight, Play, Calendar, Gamepad2, Star } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { Twitch, Youtube, ArrowRight, Play, TrendingUp, Eye } from "lucide-react";
 import Link from "next/link";
+import TwitchStats from "@/components/TwitchStats";
 
-const fadeUp = { hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0 } };
-const stagger = { visible: { transition: { staggerChildren: 0.1 } } };
+const games = ["VALORANT","MINECRAFT","LEAGUE OF LEGENDS","GTA V","FORTNITE","ELDEN RING","VALORANT","MINECRAFT","LEAGUE OF LEGENDS","GTA V","FORTNITE","ELDEN RING"];
 
-export default function HomePage() {
+export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+
   return (
       <div>
-        {/* HERO */}
-        <section style={{ minHeight: "90vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", padding: "80px 24px" }}>
-          {/* BG Orbs */}
-          <div style={{ position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", bottom: "20%", right: "10%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(232,121,249,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
+        {/* ─── HERO ─── */}
+        <section ref={heroRef} style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", position: "relative", overflow: "hidden", paddingBottom: 80 }}>
+          {/* BG ghost text */}
+          <motion.div style={{ y: heroY, opacity: heroOpacity, position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+            <div className="f-display" style={{ fontSize: "clamp(200px, 40vw, 480px)", color: "transparent", WebkitTextStroke: "1px rgba(245,244,240,0.03)", userSelect: "none", letterSpacing: "-0.02em", lineHeight: 1 }}>
+              EN
+            </div>
+          </motion.div>
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
-            <motion.div variants={stagger} initial="hidden" animate="visible">
-              <motion.div variants={fadeUp} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 6, padding: "6px 14px", marginBottom: 24 }}>
-                <span className="live-badge">LIVE</span>
-                <span style={{ color: "var(--text2)", fontSize: 13, fontFamily: "'JetBrains Mono', monospace" }}>Mo–Fr ab 19:00 Uhr</span>
-              </motion.div>
+          {/* Top accent line */}
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, transparent, var(--cyan), transparent)" }} />
 
-              <motion.h1 variants={fadeUp} className="font-display" style={{ fontSize: "clamp(56px, 8vw, 96px)", lineHeight: 1, letterSpacing: "0.02em", marginBottom: 20 }}>
-                HEY MEIN NAME IST{" "}
-                <span style={{ color: "transparent", WebkitTextStroke: "2px var(--accent2)", display: "block" }} className="glow-text">
-                EYNOAH
-              </span>
+          {/* Content */}
+          <motion.div style={{ y: heroY, maxWidth: 1400, margin: "0 auto", padding: "120px 32px 0", position: "relative", zIndex: 1, width: "100%" }}>
+
+            {/* Big headline */}
+            <div style={{ overflow: "hidden", marginBottom: 8 }}>
+              <motion.h1 initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                         className="f-display" style={{ fontSize: "clamp(64px, 12vw, 160px)", lineHeight: 0.9, letterSpacing: "-0.01em", color: "var(--white)" }}>
+                EY
               </motion.h1>
+            </div>
+            <div style={{ overflow: "hidden", marginBottom: 56 }}>
+              <motion.h1 initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.08 }}
+                         className="f-display" style={{ fontSize: "clamp(64px, 12vw, 160px)", lineHeight: 0.9, letterSpacing: "-0.01em", color: "transparent", WebkitTextStroke: "2px var(--cyan)" }}>
+                NOAH.
+              </motion.h1>
+            </div>
 
-              <motion.p variants={fadeUp} style={{ color: "var(--text2)", fontSize: 17, lineHeight: 1.7, marginBottom: 36, maxWidth: 460 }}>
-                Streamer, Gamer & Content Creator. Jeden Abend live mit der Community – komm vorbei und sei dabei!
-              </motion.p>
-
-              <motion.div variants={fadeUp} style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <a href="https://twitch.tv/Labynoah" target="_blank" className="btn-primary" style={{ padding: "14px 28px", fontSize: 15, display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-                  <Twitch size={18} /> Jetzt live schauen
-                </a>
-                <Link href="/clips" className="btn-ghost" style={{ padding: "14px 28px", fontSize: 15, display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-                  <Play size={18} /> Clips ansehen
-                </Link>
-              </motion.div>
-
-              <motion.div variants={fadeUp} style={{ display: "flex", gap: 32, marginTop: 48 }}>
-                {[{ label: "Follower", val: "124", Icon: Users }, { label: "Zuschauer Ø", val: "2", Icon: Eye }, { label: "Streams", val: "7+", Icon: Zap }].map(({ label, val, Icon }) => (
-                    <div key={label}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--accent3)", marginBottom: 2 }}>
-                        <Icon size={14} />
-                        <span className="font-mono" style={{ fontSize: 22, fontWeight: 500, color: "var(--text)" }}>{val}</span>
-                      </div>
-                      <span style={{ color: "var(--text3)", fontSize: 12, letterSpacing: "0.08em" }}>{label}</span>
-                    </div>
-                ))}
-              </motion.div>
-            </motion.div>
-
-            {/* Avatar Card */}
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }} style={{ display: "flex", justifyContent: "center" }}>
-              <div className="float" style={{ position: "relative" }}>
-                <div className="glow" style={{
-                  width: 320, height: 320, borderRadius: 24,
-                  background: "linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%)",
-                  border: "1px solid var(--border)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  position: "relative", overflow: "hidden"
-                }}>
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(124,58,237,0.1), rgba(232,121,249,0.05))" }} />
-                  <div className="font-display" style={{ fontSize: 120, color: "transparent", WebkitTextStroke: "2px rgba(124,58,237,0.4)", position: "relative", zIndex: 1 }}>EN</div>
-                  <div style={{ position: "absolute", bottom: 20, left: 0, right: 0, textAlign: "center" }}>
-                    <span className="live-badge">● ONLINE</span>
-                  </div>
+            {/* Description + CTA */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.6 }}
+                        style={{ display: "flex", gap: 48, alignItems: "flex-start", flexWrap: "wrap", marginBottom: 56 }}>
+              <div style={{ maxWidth: 360 }}>
+                <p style={{ color: "var(--white2)", fontSize: 16, lineHeight: 1.75, marginBottom: 28 }}>
+                  Streamer, Gamer & Content Creator — täglich live mit der Community. Kein Skip, kein Filter. Nur echtes Gaming.
+                </p>
+                <div style={{ display: "flex", gap: 12 }}>
+                  <a href="https://twitch.tv/eynoah" target="_blank" className="btn btn-cyan">
+                    <Twitch size={15} /> Live schauen
+                  </a>
+                  <Link href="/clips" className="btn btn-outline">
+                    <Play size={15} /> Clips
+                  </Link>
                 </div>
-                {/* Floating badges */}
-                <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-                            style={{ position: "absolute", top: -16, right: -16, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", display: "flex", alignItems: "center", gap: 6 }}>
-                  <Gamepad2 size={14} color="var(--accent2)" />
-                  <span style={{ fontSize: 12, fontWeight: 700, color: "var(--text)" }}>Gaming</span>
-                </motion.div>
-                <motion.div animate={{ y: [0, -6, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 1 }}
-                            style={{ position: "absolute", bottom: -16, left: -16, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", display: "flex", alignItems: "center", gap: 6 }}>
-                  <Star size={14} color="gold" />
-                  <span style={{ fontSize: 12, fontWeight: 700, color: "var(--text)" }}>Community</span>
-                </motion.div>
               </div>
             </motion.div>
+
+            {/* ── TWITCH LIVE STATS ── */}
+            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.6 }}>
+              <div style={{ borderTop: "1px solid var(--border)", paddingTop: 32 }}>
+                <p className="f-mono" style={{ fontSize: 9, color: "var(--white3)", letterSpacing: "0.2em", marginBottom: 20 }}>// ECHTZEIT TWITCH STATS</p>
+                <TwitchStats />
+              </div>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* ─── MARQUEE ─── */}
+        <div style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "18px 0", overflow: "hidden", background: "var(--black2)" }}>
+          <div className="marquee-track">
+            {games.map((g, i) => (
+                <div key={i} className="f-mono" style={{ display: "flex", alignItems: "center", gap: 32, paddingRight: 32, fontSize: 11, letterSpacing: "0.15em", color: i % 3 === 0 ? "var(--cyan)" : "var(--white3)" }}>
+                  {g} <span style={{ opacity: 0.3 }}>◆</span>
+                </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ─── SCHEDULE PREVIEW ─── */}
+        <section style={{ maxWidth: 1400, margin: "0 auto", padding: "120px 32px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "start" }}>
+            <div>
+              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+                <p className="f-mono" style={{ fontSize: 10, color: "var(--white3)", letterSpacing: "0.15em", marginBottom: 20 }}>// SCHEDULE</p>
+                <h2 className="f-display" style={{ fontSize: "clamp(40px, 5vw, 72px)", lineHeight: 1, marginBottom: 24 }}>
+                  WANN BIN<br />ICH <span style={{ color: "var(--cyan)" }}>LIVE?</span>
+                </h2>
+                <p style={{ color: "var(--white3)", fontSize: 15, lineHeight: 1.7, maxWidth: 320, marginBottom: 32 }}>
+                  Von Montag bis Samstag – mit Late Night Streams, Community Events und Ranked Grind.
+                </p>
+                <Link href="/plan" className="btn btn-outline" style={{ display: "inline-flex" }}>
+                  Zum Spielplan <ArrowRight size={15} />
+                </Link>
+              </motion.div>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              {[
+                { d: "MO", label: "Montag", time: "19–22", game: "Variety", live: true },
+                { d: "DI", label: "Dienstag", time: "19–22", game: "FPS / Shooter", live: true },
+                { d: "MI", label: "Mittwoch", time: "—", game: "Pause", live: false },
+                { d: "DO", label: "Donnerstag", time: "20–23", game: "Community Abend", live: true },
+                { d: "FR", label: "Freitag", time: "20–00", game: "Late Night", live: true },
+                { d: "SA", label: "Samstag", time: "15–20", game: "Ranked Grind", live: true },
+              ].map(({ d, label, time, game, live }, i) => (
+                  <motion.div key={d}
+                              initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
+                              viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+                              style={{
+                                display: "grid", gridTemplateColumns: "48px 1fr auto",
+                                alignItems: "center", gap: 20, padding: "16px 20px",
+                                background: "var(--black2)", border: "1px solid var(--border)",
+                                borderLeft: live ? "2px solid var(--cyan)" : "2px solid var(--black2)",
+                                opacity: live ? 1 : 0.4, transition: "background 0.2s",
+                              }}
+                              whileHover={{ background: "var(--black3)" }}
+                  >
+                    <span className="f-mono" style={{ fontSize: 11, color: live ? "var(--cyan)" : "var(--white3)", letterSpacing: "0.1em" }}>{d}</span>
+                    <div>
+                      <p style={{ fontWeight: 600, fontSize: 14, marginBottom: 2 }}>{label}</p>
+                      <p className="f-mono" style={{ fontSize: 10, color: "var(--white3)" }}>{game}</p>
+                    </div>
+                    <span className="f-mono" style={{ fontSize: 11, color: "var(--white3)" }}>{time} Uhr</span>
+                  </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* QUICK LINKS */}
-        <section style={{ padding: "80px 24px", maxWidth: 1200, margin: "0 auto" }}>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
-                      style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
-            {[
-              { href: "/plan", icon: Calendar, label: "Stream Plan", desc: "Wann bin ich live? Alle Termine auf einen Blick.", color: "var(--accent)" },
-              { href: "/clips", icon: Play, label: "Beste Clips", desc: "Die lustigsten & epischsten Momente.", color: "var(--neon)" },
-              { href: "https://twitch.tv", icon: Twitch, label: "Twitch", desc: "Folge mir auf Twitch und verpasse keinen Stream.", color: "#9146ff", external: true },
-            ].map(({ href, icon: Icon, label, desc, color, external }) => (
-                <motion.div key={href} variants={fadeUp}>
-                  <Link href={href} target={external ? "_blank" : undefined} style={{ textDecoration: "none" }}>
-                    <motion.div whileHover={{ y: -4, borderColor: color }} className="card" style={{ padding: 28, cursor: "pointer", transition: "all 0.3s", display: "block" }}>
-                      <div style={{ width: 44, height: 44, borderRadius: 10, background: `${color}1a`, border: `1px solid ${color}30`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
-                        <Icon size={20} color={color} />
-                      </div>
-                      <h3 style={{ fontWeight: 700, fontSize: 17, marginBottom: 6, color: "var(--text)" }}>{label}</h3>
-                      <p style={{ color: "var(--text3)", fontSize: 14, lineHeight: 1.5 }}>{desc}</p>
-                      <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 14, color, fontSize: 13, fontWeight: 600 }}>
-                        Mehr erfahren <ChevronRight size={14} />
-                      </div>
+        {/* ─── CLIPS PREVIEW ─── */}
+        <section style={{ background: "var(--black2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "120px 32px" }}>
+          <div style={{ maxWidth: 1400, margin: "0 auto" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 56, flexWrap: "wrap", gap: 20 }}>
+              <div>
+                <p className="f-mono" style={{ fontSize: 10, color: "var(--white3)", letterSpacing: "0.15em", marginBottom: 16 }}>// HIGHLIGHTS</p>
+                <h2 className="f-display" style={{ fontSize: "clamp(36px, 4vw, 60px)", lineHeight: 1 }}>
+                  BESTE <span style={{ color: "var(--cyan)" }}>CLIPS</span>
+                </h2>
+              </div>
+              <Link href="/clips" className="btn btn-outline" style={{ display: "inline-flex" }}>
+                Alle ansehen <ArrowRight size={15} />
+              </Link>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+              {[
+                { title: "MEGA CLUTCH — 1v5 Valorant!", views: "14.2K", duration: "0:47", hot: true },
+                { title: "Die lustigste Fail-Compilation", views: "22.1K", duration: "3:15", hot: true },
+                { title: "Stream Sniper erwischt 😂", views: "18.7K", duration: "0:34", hot: false },
+              ].map((clip, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+                    <motion.div whileHover={{ scale: 1.02 }} className="scanlines" style={{
+                      aspectRatio: "16/9", background: `linear-gradient(135deg, hsl(${190 + i * 20}deg 60% 8%), var(--black))`,
+                      border: "1px solid var(--border)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center",
+                      position: "relative", cursor: "pointer", overflow: "hidden",
+                    }}>
+                      <motion.div whileHover={{ scale: 1.1 }} style={{
+                        width: 48, height: 48, borderRadius: "50%", border: "1.5px solid rgba(245,244,240,0.3)",
+                        display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(8,8,9,0.6)", backdropFilter: "blur(8px)"
+                      }}>
+                        <Play size={18} color="var(--white)" fill="var(--white)" />
+                      </motion.div>
+                      {clip.hot && <div style={{ position: "absolute", top: 10, left: 10 }}><span className="tag tag-cyan">HOT</span></div>}
+                      <span className="f-mono" style={{ position: "absolute", bottom: 10, right: 10, fontSize: 10, color: "var(--white2)", background: "rgba(8,8,9,0.7)", padding: "2px 7px", borderRadius: 2 }}>{clip.duration}</span>
                     </motion.div>
-                  </Link>
-                </motion.div>
-            ))}
+                    <div style={{ padding: "14px 4px 0" }}>
+                      <p style={{ fontWeight: 600, fontSize: 14, marginBottom: 6, lineHeight: 1.3 }}>{clip.title}</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <span className="f-mono" style={{ fontSize: 10, color: "var(--white3)" }}><Eye size={10} style={{ display: "inline", marginRight: 4 }} />{clip.views} views</span>
+                        <TrendingUp size={10} color="var(--cyan)" />
+                      </div>
+                    </div>
+                  </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── CTA ─── */}
+        <section style={{ maxWidth: 1400, margin: "0 auto", padding: "120px 32px" }}>
+          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                      style={{ border: "1px solid var(--border)", borderRadius: 3, padding: "80px 64px", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent 0%, var(--cyan) 50%, transparent 100%)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(0,229,255,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
+            <div style={{ maxWidth: 600, position: "relative" }}>
+              <p className="f-mono" style={{ fontSize: 10, color: "var(--cyan)", letterSpacing: "0.15em", marginBottom: 20 }}>// JOIN THE COMMUNITY</p>
+              <h2 className="f-display" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: 1, marginBottom: 24 }}>
+                KEIN STREAM MEHR VERPASSEN.
+              </h2>
+              <p style={{ color: "var(--white3)", fontSize: 15, lineHeight: 1.7, marginBottom: 40 }}>
+                Folge auf Twitch und YouTube – aktiviere Benachrichtigungen und sei beim nächsten Stream mit dabei.
+              </p>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <a href="https://twitch.tv/eynoah" target="_blank" className="btn btn-cyan"><Twitch size={15} /> Twitch folgen</a>
+                <a href="https://youtube.com" target="_blank" className="btn btn-outline"><Youtube size={15} /> YouTube abonnieren</a>
+              </div>
+            </div>
           </motion.div>
         </section>
       </div>
